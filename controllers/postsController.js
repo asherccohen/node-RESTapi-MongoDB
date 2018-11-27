@@ -13,6 +13,7 @@ exports.list_all_Posts = function(req, res) {
         res.json(post);
     });
 };
+//I have tries with mongoose populate but couldn't make it work
 
 /* exports.create_a_Post = function(req, res) {
     var post_instance = new Post({
@@ -23,67 +24,73 @@ exports.list_all_Posts = function(req, res) {
         deactivated: false,
         picture: req.body.picture || null,
         creator: req.userId, //(ObjectId) -
-        tagged_Users:  [{
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        }] //taggedUsers field is an Array referenced documents from your Users collection
-    }); */
+        tagged_Users: [{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User'
+            }]  //taggedUsers field is an Array referenced documents from your Users collection
+    });
 
-  /*   User.find({}).populate('tagged_Users').exec(function(err, users) {
+
+    User.find({}).populate('tagged_Users').exec(function(err, users) {
         //console.log(users)
         if (err) return handleError(err);
         console.log('The tagged_Users is %s', users);
         // prints "The author is Ian Fleming"
-    }); */
+    });
 
-    //console.log(post_instance)
-/* getUserWithPosts("antoniofruci")
-    function getUserWithPosts(user){
-  return User.findOne({ user: user })
-    .populate('tagged_Users').exec((err, tagged_Users) => {
-      console.log("Populated User " + tagged_Users);
-    })
-} */
+    getUserWithPosts("mikesuchor")
+
+    function getUserWithPosts(user) {
+        return User.findOne({
+                user: user
+            })
+            .populate('post_instance').exec((err, tagged_Users) => {
+                console.log("Populated User " + tagged_Users);
+            })
+    }
 
 
     // Save the new model instance, passing a callback
-/*     post_instance.save(function(err) {
+    post_instance.save(function(err) {
         if (err) throw err;
 
         console.log('Post created!');
         res.send(post_instance);
-    }); */
+    });
+};
+ */
 
+//This version has the problem of always saving a copy of the User's model in each post, with obvious performance issues
+exports.create_a_Post = function(req, res) {
+    var promise = User.find({}, function(err, taggedUsers) {
+        if (err)
+            console.log(err);
+        // taggedUsers is an array
+    }).exec();
 
- exports.create_a_Post = function(req, res) {
-        var promise = User.find({}, function(err, taggedUsers) {
-            if (err)
-                console.log(err);
-            // taggedUsers is an array
-        }).exec();
-
-        promise.then(function(taggedUsers) {
-            var post_instance = new Post({
-                title: req.body.title || null,
-                body: req.body.body || null,
-                createdDate: Date.now(),
-                updatedDate: Date.now(),
-                deactivated: false,
-                picture: req.body.picture || null,
-                creator: req.userId, //(ObjectId) -
-                tagged_Users: [...taggedUsers] //taggedUsers field is an Array referenced documents from your Users collection
-            });
-
-            // Save the new model instance, passing a callback
-            post_instance.save(function(err) {
-                if (err) throw err;
-
-                console.log('Post created!');
-                res.send(post_instance);
-            });
+    promise.then(function(taggedUsers) {
+        var post_instance = new Post({
+            title: req.body.title || null,
+            body: req.body.body || null,
+            createdDate: Date.now(),
+            updatedDate: Date.now(),
+            deactivated: false,
+            picture: req.body.picture || null,
+            creator: req.userId, //(ObjectId) -
+            tagged_Users: [...taggedUsers] //taggedUsers field is an Array referenced documents from your Users collection
         });
 
+        // Save the new model instance, passing a callback
+        post_instance.save(function(err) {
+            if (err) throw err;
+
+            console.log('Post created!');
+            res.send(post_instance);
+        });
+    });
 };
+
+
 
 exports.read_a_Post_byAuthor = function(req, res) {
     if (!req.params.creator) {

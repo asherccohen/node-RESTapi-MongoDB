@@ -21,34 +21,29 @@ var JWT_TOKEN = process.env.JWT_VALID;
 chai.use(chaiHttp);
 
 describe('Auth', () => {
-    beforeEach((done) => { //Before each test we empty the database
-        chai.request(server)
-            .post('/login')
-            .send({
-                'email': process.env.AUTH_EMAIL,
-                'password': process.env.AUTH_PASSWORD,
-  }).end(function (err, res) {
-       JWT_TOKEN = res.body.token;
-  });
- 
-        Post.remove({}, (err) => { 
-           done();           
-        });        
+    chai.request(server)
+        .post('/login')
+        .send({
+            'email': process.env.AUTH_EMAIL,
+            'password': process.env.AUTH_PASSWORD,
+        }).end(function(err, res) {
+            JWT_TOKEN = res.body.token;
+        });
+
+    /*
+     * Test the /AUTH route
+     */
+    describe('/GET jwt user', () => {
+        it('it should GET the JWT user', (done) => {
+            chai.request(server)
+                .get('/auth/me')
+                .set('x-access-token', JWT_TOKEN)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    done();
+                });
+        });
     });
-/*
-  * Test the /AUTH route
-  */
-  describe('/GET jwt user', () => {
-      it('it should GET the JWT user', (done) => {
-        chai.request(server)
-            .get('/auth/me')
-            .set('x-access-token', JWT_TOKEN)
-            .end((err, res) => {
-                  res.should.have.status(200);
-                  res.body.should.be.a('object');
-              done();
-            });
-      });
-  });
 
 });

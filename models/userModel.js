@@ -24,4 +24,11 @@ var UserSchema = new Schema({
     },
 });
 
+/* UserSchema.virtual('users', {
+    ref: 'User',
+    localField: '_id',
+    foreignField: 'tagged_Users'
+});
+
+ */
 module.exports = mongoose.model('User', UserSchema, 'users');

@@ -21,35 +21,28 @@ var JWT_TOKEN = process.env.JWT_VALID;
 chai.use(chaiHttp);
 
 describe('Posts', () => {
-    beforeEach((done) => { //Before each test we empty the database
-        chai.request(server)
-            .post('/login')
-            .send({
-                'email': process.env.AUTH_EMAIL,
-                'password': process.env.AUTH_PASSWORD,
-  }).end(function (err, res) {
-       JWT_TOKEN = res.body.token;
-  });
- 
-        Post.remove({}, (err) => { 
-           done();           
-        });        
+    chai.request(server)
+        .post('/login')
+        .send({
+            'email': process.env.AUTH_EMAIL,
+            'password': process.env.AUTH_PASSWORD,
+        }).end(function(err, res) {
+            JWT_TOKEN = res.body.token;
+        });
+    /*
+     * Test the /POST route
+     */
+    describe('/GET post', () => {
+        it('it should GET all the posts', (done) => {
+            chai.request(server)
+                .get('/posts')
+                .set('x-access-token', JWT_TOKEN)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('array');
+                    done();
+                });
+        });
     });
-/*
-  * Test the /POST route
-  */
-  describe('/GET post', () => {
-      it('it should GET all the posts', (done) => {
-        chai.request(server)
-            .get('/posts')
-            .set('x-access-token', JWT_TOKEN)
-            .end((err, res) => {
-                  res.should.have.status(200);
-                  res.body.should.be.a('array');
-                  res.body.length.should.be.eql(0);
-              done();
-            });
-      });
-  });
 
 });

@@ -48,7 +48,7 @@ router.param('/me', function(request, response, next, me) {
 router.get('/:me?', verifyToken, function(req, res, next) {
     req.params.creator = req.userId;
     postsController.read_a_Post_byAuthor(req, res)
-    //res.send('respond with a resource');
+        //res.send('respond with a resource');
 
 });
 /* router.param('/_id', function(request, response, next, _id) {

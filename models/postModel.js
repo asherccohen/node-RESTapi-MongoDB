@@ -30,13 +30,27 @@ var PostSchema = new Schema({
     creator: {
         type: ObjectId,
     },
-/*     tagged_Users: [{
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        }] */
-           tagged_Users: {
-               type: Array,
-           }
+    tagged_Users: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    /*     tagged_Users: {
+            type: Array,
+        } */
 });
+
+/* User.find({}).populate('PostSchema.tagged_Users').exec(function(err, users) {
+    //console.log(users)
+    if (err) return handleError(err);
+    //console.log('The tagged_Users is %s', users);
+    // prints "The author is Ian Fleming"
+});
+console.log(PostSchema); */
+
+/* PostSchema.virtual('posts', {
+    ref: 'User',
+    localField: '_id',
+    foreignField: 'tagged_Users'
+}); */
 
 module.exports = mongoose.model('Post', PostSchema, 'posts');
