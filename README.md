@@ -1,3 +1,8 @@
+# Node.js, MongoDB REST Api
+
+<img src="https://upload.wikimedia.org/wikipedia/en/thumb/4/45/MongoDB-Logo.svg/527px-MongoDB-Logo.svg.png" height="50"> <img src="https://worldvectorlogo.com/logos/nodejs-icon.svg" height="50"> <img src="https://camo.githubusercontent.com/66747a6e05a799aec9c6e04a3e721ca567748e8b/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f313336353838312f313931383337332f32653035373166612d376462632d313165332d383436352d3839356632393164343366652e706e67" height="50">
+
+
 Goal:
 
 Create a Node + Express backend service as described:
@@ -40,9 +45,36 @@ Part 3: (not mandatory, added value)
 - Search routes for Users and Posts can perform pagination.
 - This service must be documented using swagger -> https://swagger.io/
 
+### [Live Demo](https://null/)
 
-//ROUTES
+## Features
 
+**Server-side**
+* [x] **[Node.JS](https://nodejs.org)** v6.x.x
+* [x] [MongoDB](https://www.mongodb.com/) with [Mongoose](https://github.com/Automattic/mongoose)
+
+## Build Setup
+
+``` bash
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:3000
+npm start
+
+# start server
+node index.js
+
+# start mongodb
+mongod
+
+```
+
+Before start, you have to install production dependencies with npm: `npm install`
+
+
+## Routes
+```
 _REGISTER
 http://localhost:3000/register
 req.body={name: 'name', email: 'email', password: 'password'}
@@ -91,4 +123,26 @@ header = x-access-token
 
 __UPDATE POST BY ID
 PUT http://localhost:3000/posts/5bfb2a7b5c50c4081c5e264c
+```
+
+
+## License
+
+This repo is available under the [MIT license](https://tldrlegal.com/license/mit-license).
+
+## Contact
+
+Copyright (C) 2016 Snake
+
+[![@asherccohen](https://img.shields.io/badge/github-asherccohen-green.svg)](https://github.com/asherccohen) [![@asherccohen](https://img.shields.io/badge/twitter-iSnake_-blue.svg)](https://twitter.com/iSnake_)
+
+
+
+
+
+
+
+
+
+
 
