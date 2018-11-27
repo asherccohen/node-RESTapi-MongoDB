@@ -42,6 +42,7 @@ Part 3: (not mandatory, added value)
 
 
 //ROUTES
+
 _REGISTER
 http://localhost:3000/register
 req.body={name: 'name', email: 'email', password: 'password'}
